@@ -73,10 +73,10 @@ class ConvNet3(nn.Module):
         self.conv1 = nn.Conv2d(1, 16, kernel_size=(3, 3), padding=1) # 28x28
         self.pool1 = nn.MaxPool2d(kernel_size=(2, 2), stride=2) # 14x14
         self.conv2 = nn.Conv2d(16, 32, kernel_size=(3, 3)) # 12x12
-        self.pool2 = nn.MaxPool2d(kernel_size=(3, 3), stride=2) # 4x4
+        self.pool2 = nn.MaxPool2d(kernel_size=(3, 3), stride=2) # 5x5
 
         # Fully connected layers
-        self.fc1 = nn.Linear(32 * (4 * 4), 64)
+        self.fc1 = nn.Linear(32 * (5 * 5), 64)
         self.fc2 = nn.Linear(64, 10)
     
     def forward(self, x):
@@ -89,7 +89,5 @@ class ConvNet3(nn.Module):
         # Fully connected part
         out = out.flatten(start_dim=1)
         out = F.relu(self.fc1(out))
-        out = F.relu(self.fc2(out))
-        out = F.relu(self.fc3(out))
-        out = self.fc4(out)
+        out = self.fc2(out)
         return out
