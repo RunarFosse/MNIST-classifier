@@ -1,2 +1,5 @@
 /datasets
 /models/trained/*
+
+.DS_Store
+__pycache__
