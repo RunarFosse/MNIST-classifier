@@ -129,4 +129,6 @@ class ConvNet4(nn.Module):
         out = F.relu(self.conv6(out))
         out = self.pool4(out)
         out = self.conv7(out)
+
+        out = out.flatten(start_dim=1)
         return out
