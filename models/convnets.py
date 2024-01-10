@@ -91,3 +91,42 @@ class ConvNet3(nn.Module):
         out = F.relu(self.fc1(out))
         out = self.fc2(out)
         return out
+
+class ConvNet4(nn.Module):
+    """ Fully convolutional model (with dropout layers) """
+    def __init__(self):
+        super().__init__()
+
+        # Convolutional layers, 28x28
+        self.conv1 = nn.Conv2d(1, 16, kernel_size=(7, 7), padding=3) # 28x28
+        self.conv2 = nn.Conv2d(16, 32, kernel_size=(5, 5), padding=1) # 26x26
+        self.pool1 = nn.MaxPool2d(kernel_size=(2, 2), stride=2) # 13x13
+        self.conv3 = nn.Conv2d(32, 64, kernel_size=(4, 4)) # 10x10
+        self.dropout1 = nn.Dropout2d()
+        self.pool2 = nn.MaxPool2d(kernel_size=(2, 2), stride=2) # 5x5
+        self.conv4 = nn.Conv2d(64, 128, kernel_size=(1, 1)) # 5x5
+        self.conv5 = nn.Conv2d(128, 256, kernel_size=(1, 1)) # 5x5
+        self.dropout2 = nn.Dropout2d()
+        self.pool3 = nn.MaxPool2d(kernel_size=(2, 2), stride=2) # 2x2
+        self.conv6 = nn.Conv2d(256, 80, kernel_size=(1, 1)) # 2x2
+        self.pool4 = nn.MaxPool2d(kernel_size=(2, 2)) # 1x1
+        self.conv7 = nn.Conv2d(80, 10, kernel_size=(1, 1)) # 1x1x10 = 10
+    
+    def forward(self, x):
+        # Convolutional part (only part)
+        out = F.relu(self.conv1(x))
+        out = F.relu(self.conv2(out))
+        out = self.pool1(out)
+        out = F.relu(self.conv3(out))
+        out = self.dropout1(out)
+
+        out = self.pool2(out)
+        out = F.relu(self.conv4(out))
+        out = F.relu(self.conv5(out))
+        out = self.dropout2(out)
+
+        out = self.pool3(out)
+        out = F.relu(self.conv6(out))
+        out = self.pool4(out)
+        out = self.conv7(out)
+        return out
